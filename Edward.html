@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Habit tracker</title>
+  <title>Edward Cullen - Personal Organizer</title>
   <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
   <div class="app">
     <div class="sidebar">
-      <div class="logo"></div>
+      <div class="logo">Edward Cullen</div>
       <div class="nav">
         <div class="navItem"></div>
         <div class="navItem"></div>
@@ -21,24 +21,22 @@
 
     <div class="main">
       <div class="topbar">
-        <div class="title"></div>
+        <div class="title" id="moduleTitle"></div>
         <div class="icons">
-          <div class="icon"></div>
-          <div class="icon"></div>
+          <div class="icon" id="settingsBtn" title="Ustawienia">⚙️</div>
+          <div class="icon" id="helpBtn" title="Pomoc">❓</div>
         </div>
       </div>
 
       <div class="content">
-        <div class="box topA"></div>
-        <div class="box topB"></div>
-
-        <div class="tableBox"></div>
-
-        <div class="sideBox"></div>
-
-        <div class="bottomBox"></div>
+        <div class="module" id="habits-module"></div>
+        <div class="module hidden" id="budget-module"></div>
+        <div class="module hidden" id="todo-module"></div>
+        <div class="module hidden" id="calendar-module"></div>
+        <div class="module hidden" id="wishlist-module"></div>
       </div>
     </div>
   </div>
 </body>
 </html>
+

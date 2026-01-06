@@ -11,17 +11,32 @@
     <div class="sidebar">
       <div class="logo">Edward Cullen</div>
       <div class="nav">
-        <div class="navItem"></div>
-        <div class="navItem"></div>
-        <div class="navItem"></div>
-        <div class="navItem"></div>
-        <div class="navItem"></div>
+        <div class="navItem active" data-module="habits">
+          <span class="navIcon">📊</span>
+          <span class="navText">Habit Tracker</span>
+        </div>
+        <div class="navItem" data-module="budget">
+          <span class="navIcon">💰</span>
+          <span class="navText">Kosztorys</span>
+        </div>
+        <div class="navItem" data-module="todo">
+          <span class="navIcon">✓</span>
+          <span class="navText">TodoList</span>
+        </div>
+        <div class="navItem" data-module="calendar">
+          <span class="navIcon">📅</span>
+          <span class="navText">Calendar View</span>
+        </div>
+        <div class="navItem" data-module="wishlist">
+          <span class="navIcon">⭐</span>
+          <span class="navText">WishList</span>
+        </div>
       </div>
     </div>
 
     <div class="main">
       <div class="topbar">
-        <div class="title" id="moduleTitle"></div>
+        <div class="title" id="moduleTitle">Habit Tracker</div>
         <div class="icons">
           <div class="icon" id="settingsBtn" title="Ustawienia">⚙️</div>
           <div class="icon" id="helpBtn" title="Pomoc">❓</div>
@@ -37,6 +52,7 @@
       </div>
     </div>
   </div>
+  <script src="script.js"></script>
 </body>
 </html>
 

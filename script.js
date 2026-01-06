@@ -1,3 +1,31 @@
+// State management
+const state = {
+  currentModule: 'habits',
+  habits: JSON.parse(localStorage.getItem('habits') || '[]'),
+  transactions: JSON.parse(localStorage.getItem('transactions') || '[]'),
+  todos: JSON.parse(localStorage.getItem('todos') || '[]'),
+  wishes: JSON.parse(localStorage.getItem('wishes') || '[]'),
+  currentMonth: new Date().getMonth(),
+  currentYear: new Date().getFullYear()
+};
+
+// Utility functions
+function saveToStorage(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+function formatDate(date) {
+  return new Date(date).toLocaleDateString('pl-PL');
+}
+
+function getDaysInMonth(month, year) {
+  return new Date(year, month + 1, 0).getDate();
+}
+
+function getFirstDayOfMonth(month, year) {
+  return new Date(year, month, 1).getDay();
+}
+
 // Navigation
 function initNavigation() {
   document.querySelectorAll('.navItem').forEach(item => {
@@ -9,6 +37,8 @@ function initNavigation() {
 }
 
 function switchModule(module) {
+  state.currentModule = module;
+  
   // Update active nav item
   document.querySelectorAll('.navItem').forEach(item => {
     item.classList.toggle('active', item.dataset.module === module);
@@ -32,10 +62,18 @@ function switchModule(module) {
     wishlist: 'WishList'
   };
   document.getElementById('moduleTitle').textContent = titles[module] || '';
+  
+  // Initialize module
+  if (module === 'habits') initHabitsModule();
+  if (module === 'budget') initBudgetModule();
+  if (module === 'todo') initTodoModule();
+  if (module === 'calendar') initCalendarModule();
+  if (module === 'wishlist') initWishlistModule();
 }
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
+  switchModule('habits');
 });
 

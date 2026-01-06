@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumentacja - Edward Cullen Personal Organizer</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #4ECDC4;
+            padding-bottom: 10px;
+            margin-top: 30px;
+            page-break-after: avoid;
+        }
+        h2 {
+            color: #34495e;
+            border-bottom: 2px solid #4ECDC4;
+            padding-bottom: 8px;
+            margin-top: 25px;
+            page-break-after: avoid;
+        }
+        h3 {
+            color: #555;
+            margin-top: 20px;
+            page-break-after: avoid;
+        }
+        h4 {
+            color: #666;
+            margin-top: 15px;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #e83e8c;
+        }
+        pre {
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            border-left: 4px solid #4ECDC4;
+            padding: 15px;
+            overflow-x: auto;
+            page-break-inside: avoid;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: #333;
+        }
+        ul, ol {
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            page-break-inside: avoid;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: #4ECDC4;
+            color: #fff;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .info-box {
+            background: #e8f4f8;
+            border-left: 4px solid #4ECDC4;
+            padding: 15px;
+            margin: 15px 0;
+            page-break-inside: avoid;
+        }
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            page-break-inside: avoid;
+        }
+        .feature-list {
+            background: #f0f9ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            page-break-after: avoid;
+        }
+        .toc ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+        .toc li {
+            margin: 8px 0;
+        }
+        .toc a {
+            color: #4ECDC4;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+        .metadata {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .metadata p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dokumentacja Techniczna</h1>
+    <h2>Edward Cullen - Personal Organizer</h2>
+    
+    <div class="metadata">
+        <p><strong>Wersja:</strong> 1.0</p>
+        <p><strong>Data utworzenia:</strong> 2024</p>
+        <p><strong>Język:</strong> Polski</p>
+        <p><strong>Technologie:</strong> HTML5, CSS3, JavaScript (ES6+), LocalStorage API</p>
+    </div>
+
+    <div class="toc">
+        <h3>Spis treści</h3>
+        <ul>
+            <li><a href="#wprowadzenie">1. Wprowadzenie</a></li>
+            <li><a href="#przeglad">2. Przegląd projektu</a></li>
+            <li><a href="#struktura">3. Struktura plików</a></li>
+            <li><a href="#moduly">4. Szczegółowy opis modułów</a>
+                <ul>
+                    <li><a href="#habit-tracker">4.1. Habit Tracker</a></li>
+                    <li><a href="#kosztorys">4.2. Kosztorys</a></li>
+                    <li><a href="#todolist">4.3. TodoList</a></li>
+                    <li><a href="#calendar">4.4. Calendar View</a></li>
+                    <li><a href="#wishlist">4.5. WishList</a></li>
+                </ul>
+            </li>
+            <li><a href="#architektura">5. Architektura aplikacji</a></li>
+            <li><a href="#funkcje">6. Funkcje pomocnicze</a></li>
+            <li><a href="#storage">7. Przechowywanie danych</a></li>
+            <li><a href="#ui">8. Interfejs użytkownika</a></li>
+            <li><a href="#instalacja">9. Instalacja i uruchomienie</a></li>
+            <li><a href="#uzytkowanie">10. Instrukcja użytkowania</a></li>
+        </ul>
+    </div>
+
+    <div class="page-break"></div>
+
+    <h1 id="wprowadzenie">1. Wprowadzenie</h1>
+    
+    <p><strong>Edward Cullen - Personal Organizer</strong> to kompleksowa aplikacja webowa służąca do zarządzania codziennymi zadaniami, nawykami, finansami oraz życzeniami. Aplikacja została zaprojektowana jako Single Page Application (SPA) wykorzystująca wyłącznie technologie frontendowe, bez konieczności użycia frameworków zewnętrznych.</p>
+
+    <div class="info-box">
+        <strong>Główne założenia projektu:</strong>
+        <ul>
+            <li>Aplikacja działa całkowicie po stronie klienta (client-side)</li>
+            <li>Dane przechowywane są lokalnie w przeglądarce (LocalStorage)</li>
+            <li>Brak zależności zewnętrznych - czysty JavaScript, HTML i CSS</li>
+            <li>Responsywny design dostosowany do różnych rozmiarów ekranów</li>
+            <li>Intuicyjny interfejs użytkownika z ciemnym motywem</li>
+        </ul>
+    </div>
+
+    <h2 id="przeglad">2. Przegląd projektu</h2>
+
+    <p>Aplikacja składa się z pięciu głównych modułów funkcjonalnych:</p>
+
+    <div class="feature-list">
+        <h3>Moduły aplikacji:</h3>
+        <ol>
+            <li><strong>Habit Tracker (HT)</strong> - śledzenie codziennych nawyków z wizualizacją kalendarzową</li>
+            <li><strong>Kosztorys (KT)</strong> - zarządzanie finansami (wydatki i przychody) z analityką</li>
+            <li><strong>TodoList (TD)</strong> - lista zadań z priorytetami i kategoriami</li>
+            <li><strong>Calendar View (CV)</strong> - widok kalendarzowy z integracją zadań</li>
+            <li><strong>WishList (WL)</strong> - lista życzeń z możliwością śledzenia kosztów</li>
+        </ol>
+    </div>
+
+    <h2 id="struktura">3. Struktura plików</h2>
+
+    <pre><code>Edward-Cullen/
+├── Edward.html          # Główny plik HTML z strukturą aplikacji
+├── script.js            # Logika aplikacji (736 linii kodu)
+├── style/
+│   └── style.css       # Style CSS (861 linii kodu)
+└── dokumentacja.html   # Niniejsza dokumentacja</code></pre>
+
+    <h3>3.1. Edward.html</h3>
+    <p>Główny plik HTML zawiera:</p>
+    <ul>
+        <li>Strukturę layoutu (sidebar + main content)</li>
+        <li>Definicje wszystkich pięciu modułów</li>
+        <li>Modale do dodawania nowych elementów</li>
+        <li>Nawiagację między modułami</li>
+    </ul>
+
+    <h3>3.2. script.js</h3>
+    <p>Plik JavaScript zawiera:</p>
+    <ul>
+        <li>Zarządzanie stanem aplikacji (state object)</li>
+        <li>Funkcje inicjalizujące każdy moduł</li>
+        <li>Logikę renderowania danych</li>
+        <li>Obsługę zdarzeń (event handlers)</li>
+        <li>Funkcje pomocnicze (utilities)</li>
+        <li>Integrację z LocalStorage</li>
+    </ul>
+
+    <h3>3.3. style/style.css</h3>
+    <p>Plik CSS zawiera:</p>
+    <ul>
+        <li>Style dla wszystkich modułów</li>
+        <li>Responsywne media queries</li>
+        <li>Animacje i przejścia</li>
+        <li>Style dla modali</li>
+        <li>Dostosowanie scrollbarów</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <h1 id="moduly">4. Szczegółowy opis modułów</h1>
+
+    <h2 id="habit-tracker">4.1. Habit Tracker (HT)</h2>
+
+    <h3>4.1.1. Opis funkcjonalności</h3>
+    <p>Moduł Habit Tracker umożliwia użytkownikowi śledzenie codziennych nawyków poprzez wizualną reprezentację kalendarzową. Każdy nawyk wyświetlany jest jako osobna karta z kalendarzem miesięcznym.</p>
+
+    <h3>4.1.2. Funkcje implementowane</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Funkcja</th>
+                <th>Opis</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Dodawanie nawyków</td>
+                <td>Użytkownik może dodać nowy nawyk poprzez modal dialog</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Kalendarz miesięczny</td>
+                <td>Każdy nawyk wyświetla kalendarz z dniami miesiąca jako klikalne pola</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Oznaczanie wykonania</td>
+                <td>Kliknięcie na dzień zmienia kolor na zielony i zapisuje datę systemową</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Automatyczne czerwone pola</td>
+                <td>Dni w przeszłości, które nie zostały wykonane, automatycznie stają się czerwone</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Pasek postępu</td>
+                <td>Pod kalendarzem wyświetla się pasek postępu z procentem wykonanych dni</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Usuwanie nawyków</td>
+                <td>Możliwość usunięcia nawyku przyciskiem kosza</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>4.1.3. Struktura danych</h3>
+    <pre><code>habit = {
+    name: string,              // Nazwa nawyku
+    completedDates: string[]   // Tablica dat w formacie YYYY-MM-DD
+}</code></pre>
+
+    <h3>4.1.4. Kluczowe funkcje JavaScript</h3>
+    <ul>
+        <li><code>initHabitsModule()</code> - inicjalizuje moduł</li>
+        <li><code>renderHabits()</code> - renderuje listę nawyków z kalendarzami</li>
+        <li>Obsługa kliknięć na pola kalendarza - przełączanie stanu wykonania</li>
+        <li>Automatyczne wykrywanie przeszłych dat i oznaczanie ich na czerwono</li>
+    </ul>
+
+    <h3>4.1.5. Logika kolorów</h3>
+    <ul>
+        <li><strong>Zielony (#4ECDC4)</strong> - dzień został wykonany (zapisana data)</li>
+        <li><strong>Czerwony (#FF6B6B)</strong> - dzień w przeszłości, który nie został wykonany</li>
+        <li><strong>Szary (#3a3a3a)</strong> - dzień przyszły lub dzisiejszy, jeszcze nie wykonany</li>
+        <li><strong>Niebieska ramka</strong> - oznacza dzisiejszy dzień</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <h2 id="kosztorys">4.2. Kosztorys (KT)</h2>
+
+    <h3>4.2.1. Opis funkcjonalności</h3>
+    <p>Moduł Kosztorys umożliwia kompleksowe zarządzanie finansami osobistymi poprzez śledzenie wydatków i przychodów z kategoryzacją oraz wizualizacją danych.</p>
+
+    <h3>4.2.2. Funkcje implementowane</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Funkcja</th>
+                <th>Opis</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Dodawanie wydatków</td>
+                <td>Możliwość dodania wydatku z kwotą, opisem i kategorią</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Dodawanie przychodów</td>
+                <td>Możliwość dodania przychodu z kwotą, opisem i kategorią</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Kategorie transakcji</td>
+                <td>7 kategorii: Jedzenie, Transport, Praca, Rozrywka, Zdrowie, Zakupy, Inne</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Lista transakcji</td>
+                <td>Wyświetlanie wszystkich transakcji posortowanych od najnowszych</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Podsumowanie finansowe</td>
+                <td>Wyświetlanie sumy wydatków, przychodów i bilansu</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Wykres kołowy</td>
+                <td>Wizualizacja wydatków według kategorii (Canvas API)</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Usuwanie transakcji</td>
+                <td>Możliwość usunięcia każdej transakcji</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>4.2.3. Struktura danych</h3>
+    <pre><code>transaction = {
+    amount: number,           // Kwota transakcji
+    description: string,      // Opis transakcji
+    category: string,         // Kategoria (food, transport, work, etc.)
+    type: 'expense' | 'income', // Typ: wydatek lub przychód
+    date: string             // Data w formacie ISO
+}</code></pre>
+
+    <h3>4.2.4. Kluczowe funkcje JavaScript</h3>
+    <ul>
+        <li><code>initBudgetModule()</code> - inicjalizuje moduł</li>
+        <li><code>updateBudgetSummary()</code> - aktualizuje podsumowanie finansowe</li>
+        <li><code>renderTransactions()</code> - renderuje listę transakcji</li>
+        <li><code>renderExpenseChart()</code> - rysuje wykres kołowy wydatków</li>
+        <li><code>getCategoryName()</code> - tłumaczy kod kategorii na polską nazwę</li>
+    </ul>
+
+    <h3>4.2.4. Wykres kołowy</h3>
+    <p>Wykres jest renderowany przy użyciu HTML5 Canvas API. Każda kategoria otrzymuje unikalny kolor, a wykres automatycznie przeliczany jest na podstawie proporcji wydatków w każdej kategorii.</p>
+
+    <div class="page-break"></div>
+
+    <h2 id="todolist">4.3. TodoList (TD)</h2>
+
+    <h3>4.3.1. Opis funkcjonalności</h3>
+    <p>Moduł TodoList umożliwia zarządzanie zadaniami z zaawansowanymi opcjami filtrowania, sortowania i kategoryzacji.</p>
+
+    <h3>4.3.2. Funkcje implementowane</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Funkcja</th>
+                <th>Opis</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Dodawanie zadań</td>
+                <td>Dodawanie zadania z tytułem, opisem, priorytetem, kategorią i opcjonalną datą</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Priorytety</td>
+                <td>Trzy poziomy: Niski, Średni, Wysoki (wizualnie oznaczone kolorami)</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Kategorie</td>
+                <td>Trzy kategorie: Dom, Szkoła, Praca</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Oznaczanie jako wykonane</td>
+                <td>Checkbox do oznaczenia zadania jako wykonane</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Filtrowanie</td>
+                <td>Filtrowanie po priorytecie, kategorii i statusie (aktywne/wykonane)</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Sortowanie</td>
+                <td>Sortowanie zadań według priorytetu (wysoki → niski)</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Integracja z kalendarzem</td>
+                <td>Zadania z datą wyświetlają się w module Calendar View</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Usuwanie zadań</td>
+                <td>Możliwość usunięcia każdego zadania</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>4.3.3. Struktura danych</h3>
+    <pre><code>todo = {
+    title: string,           // Tytuł zadania
+    description: string,      // Opis (opcjonalny)
+    priority: 'low' | 'medium' | 'high', // Priorytet
+    category: 'home' | 'school' | 'work', // Kategoria
+    date: string | null,     // Data w formacie YYYY-MM-DD (opcjonalna)
+    done: boolean           // Status wykonania
+}</code></pre>
+
+    <h3>4.3.4. Kluczowe funkcje JavaScript</h3>
+    <ul>
+        <li><code>initTodoModule()</code> - inicjalizuje moduł</li>
+        <li><code>renderTodos()</code> - renderuje listę zadań z zastosowaniem filtrów</li>
+        <li><code>getPriorityName()</code> - tłumaczy kod priorytetu na polską nazwę</li>
+        <li>Obsługa filtrów - dynamiczne filtrowanie listy</li>
+        <li>Funkcja sortowania - sortowanie według priorytetu</li>
+    </ul>
+
+    <h3>4.3.5. Wizualizacja priorytetów</h3>
+    <ul>
+        <li><strong>Wysoki</strong> - czerwony (#FF6B6B)</li>
+        <li><strong>Średni</strong> - pomarańczowy (#FFA07A)</li>
+        <li><strong>Niski</strong> - turkusowy (#4ECDC4)</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <h2 id="calendar">4.4. Calendar View (CV)</h2>
+
+    <h3>4.4.1. Opis funkcjonalności</h3>
+    <p>Moduł Calendar View wyświetla kalendarz miesięczny z możliwością nawigacji między miesiącami oraz integracją z modułem TodoList.</p>
+
+    <h3>4.4.2. Funkcje implementowane</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Funkcja</th>
+                <th>Opis</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Kalendarz miesięczny</td>
+                <td>Wyświetlanie kalendarza dla wybranego miesiąca</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Nawigacja między miesiącami</td>
+                <td>Przyciski do przechodzenia między miesiącami (wstecz/do przodu)</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Integracja z TodoList</td>
+                <td>Wyświetlanie liczby zadań na każdym dniu (tylko aktywne zadania)</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Wybór dnia</td>
+                <td>Kliknięcie na dzień wyświetla listę zadań na ten dzień</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Oznaczanie dzisiejszego dnia</td>
+                <td>Dzisiejszy dzień jest wyróżniony niebieską ramką</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>4.4.3. Kluczowe funkcje JavaScript</h3>
+    <ul>
+        <li><code>initCalendarModule()</code> - inicjalizuje moduł</li>
+        <li><code>renderCalendar()</code> - renderuje kalendarz dla wybranego miesiąca</li>
+        <li><code>renderCalendarTodos()</code> - wyświetla zadania dla wybranego dnia</li>
+        <li><code>getDaysInMonth()</code> - oblicza liczbę dni w miesiącu</li>
+        <li><code>getFirstDayOfMonth()</code> - określa dzień tygodnia pierwszego dnia miesiąca</li>
+    </ul>
+
+    <h3>4.4.4. Integracja z TodoList</h3>
+    <p>Moduł automatycznie pobiera zadania z modułu TodoList, które mają przypisaną datę. Wyświetla tylko zadania, które nie są oznaczone jako wykonane. Liczba zadań wyświetlana jest na każdym dniu w kalendarzu.</p>
+
+    <div class="page-break"></div>
+
+    <h2 id="wishlist">4.5. WishList (WL)</h2>
+
+    <h3>4.5.1. Opis funkcjonalności</h3>
+    <p>Moduł WishList umożliwia tworzenie i zarządzanie listą życzeń z możliwością śledzenia kosztów i oznaczania spełnionych życzeń.</p>
+
+    <h3>4.5.2. Funkcje implementowane</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Funkcja</th>
+                <th>Opis</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Dodawanie życzeń</td>
+                <td>Dodawanie życzenia z nazwą, opcjonalną ceną i opisem</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Oznaczanie spełnionych</td>
+                <td>Checkbox do oznaczenia życzenia jako spełnionego</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Śledzenie kosztów</td>
+                <td>Możliwość przypisania ceny do życzenia</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Podsumowanie</td>
+                <td>Wyświetlanie statystyk: wszystkie, spełnione, do spełnienia, szacowany koszt</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Połączenie z Budżetem</td>
+                <td>Szacowany koszt wszystkich niespełnionych życzeń (możliwość planowania w budżecie)</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+            <tr>
+                <td>Usuwanie życzeń</td>
+                <td>Możliwość usunięcia każdego życzenia</td>
+                <td>✓ Zaimplementowane</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>4.5.3. Struktura danych</h3>
+    <pre><code>wish = {
+    name: string,          // Nazwa życzenia
+    price: number | null,  // Cena (opcjonalna)
+    description: string,   // Opis (opcjonalny)
+    fulfilled: boolean    // Status spełnienia
+}</code></pre>
+
+    <h3>4.5.4. Kluczowe funkcje JavaScript</h3>
+    <ul>
+        <li><code>initWishlistModule()</code> - inicjalizuje moduł</li>
+        <li><code>renderWishlist()</code> - renderuje listę życzeń</li>
+        <li><code>updateWishlistSummary()</code> - aktualizuje podsumowanie statystyk</li>
+    </ul>
+
+    <h3>4.5.5. Podsumowanie</h3>
+    <p>Moduł wyświetla następujące statystyki:</p>
+    <ul>
+        <li>Wszystkie życzenia - całkowita liczba</li>
+        <li>Spełnione - liczba spełnionych życzeń</li>
+        <li>Do spełnienia - liczba niespełnionych życzeń</li>
+        <li>Szacowany koszt - suma cen wszystkich niespełnionych życzeń</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <h1 id="architektura">5. Architektura aplikacji</h1>
+
+    <h2>5.1. Wzorzec architektoniczny</h2>
+    <p>Aplikacja wykorzystuje wzorzec <strong>Modular Architecture</strong> z centralnym zarządzaniem stanem. Każdy moduł jest niezależny, ale współdzieli wspólny obiekt stanu.</p>
+
+    <h2>5.2. Zarządzanie stanem</h2>
+    <p>Wszystkie dane aplikacji przechowywane są w centralnym obiekcie <code>state</code>:</p>
+    <pre><code>const state = {
+    currentModule: 'habits',           // Aktualnie aktywny moduł
+    habits: [],                        // Tablica nawyków
+    transactions: [],                   // Tablica transakcji
+    todos: [],                         // Tablica zadań
+    wishes: [],                        // Tablica życzeń
+    currentMonth: number,              // Aktualny miesiąc (0-11)
+    currentYear: number                // Aktualny rok
+};</code></pre>
+
+    <h2>5.3. Przepływ danych</h2>
+    <ol>
+        <li><strong>Inicjalizacja</strong> - dane ładowane z LocalStorage do obiektu state</li>
+        <li><strong>Interakcja użytkownika</strong> - zdarzenia wywołują funkcje modyfikujące state</li>
+        <li><strong>Renderowanie</strong> - funkcje renderujące aktualizują DOM na podstawie state</li>
+        <li><strong>Zapis</strong> - zmiany w state są zapisywane do LocalStorage</li>
+    </ol>
+
+    <h2>5.4. Struktura modułów</h2>
+    <p>Każdy moduł posiada następującą strukturę funkcji:</p>
+    <ul>
+        <li><code>init[Module]Module()</code> - funkcja inicjalizująca moduł</li>
+        <li><code>render[Module]()</code> - funkcja renderująca dane modułu</li>
+        <li>Funkcje pomocnicze specyficzne dla modułu</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <h1 id="funkcje">6. Funkcje pomocnicze</h1>
+
+    <h2>6.1. Funkcje utility</h2>
+
+    <h3>6.1.1. saveToStorage(key, data)</h3>
+    <p><strong>Opis:</strong> Zapisuje dane do LocalStorage w formacie JSON.</p>
+    <p><strong>Parametry:</strong></p>
+    <ul>
+        <li><code>key</code> - klucz pod którym dane są zapisywane</li>
+        <li><code>data</code> - dane do zapisania (obiekt lub tablica)</li>
+    </ul>
+    <pre><code>function saveToStorage(key, data) {
+    localStorage.setItem(key, JSON.stringify(data));
+}</code></pre>
+
+    <h3>6.1.2. formatDate(date)</h3>
+    <p><strong>Opis:</strong> Formatuje datę do polskiego formatu (DD.MM.YYYY).</p>
+    <p><strong>Parametry:</strong></p>
+    <ul>
+        <li><code>date</code> - obiekt Date lub string ISO</li>
+    </ul>
+    <pre><code>function formatDate(date) {
+    return new Date(date).toLocaleDateString('pl-PL');
+}</code></pre>
+
+    <h3>6.1.3. getDaysInMonth(month, year)</h3>
+    <p><strong>Opis:</strong> Zwraca liczbę dni w danym miesiącu.</p>
+    <p><strong>Parametry:</strong></p>
+    <ul>
+        <li><code>month</code> - numer miesiąca (0-11)</li>
+        <li><code>year</code> - rok</li>
+    </ul>
+    <pre><code>function getDaysInMonth(month, year) {
+    return new Date(year, month + 1, 0).getDate();
+}</code></pre>
+
+    <h3>6.1.4. getFirstDayOfMonth(month, year)</h3>
+    <p><strong>Opis:</strong> Zwraca dzień tygodnia pierwszego dnia miesiąca (0 = niedziela, 6 = sobota).</p>
+    <p><strong>Parametry:</strong></p>
+    <ul>
+        <li><code>month</code> - numer miesiąca (0-11)</li>
+        <li><code>year</code> - rok</li>
+    </ul>
+    <pre><code>function getFirstDayOfMonth(month, year) {
+    return new Date(year, month, 1).getDay();
+}</code></pre>
+
+    <h2>6.2. Funkcje nawigacji</h2>
+
+    <h3>6.2.1. initNavigation()</h3>
+    <p><strong>Opis:</strong> Inicjalizuje obsługę kliknięć na elementy nawigacji w sidebarze.</p>
+
+    <h3>6.2.2. switchModule(module)</h3>
+    <p><strong>Opis:</strong> Przełącza aktywny moduł aplikacji.</p>
+    <p><strong>Parametry:</strong></p>
+    <ul>
+        <li><code>module</code> - identyfikator modułu ('habits', 'budget', 'todo', 'calendar', 'wishlist')</li>
+    </ul>
+    <p><strong>Działanie:</strong></p>
+    <ol>
+        <li>Aktualizuje aktywny element w nawigacji</li>
+        <li>Ukrywa wszystkie moduły</li>
+        <li>Pokazuje wybrany moduł</li>
+        <li>Aktualizuje tytuł w topbarze</li>
+        <li>Inicjalizuje wybrany moduł</li>
+    </ol>
+
+    <div class="page-break"></div>
+
+    <h1 id="storage">7. Przechowywanie danych</h1>
+
+    <h2>7.1. LocalStorage API</h2>
+    <p>Aplikacja wykorzystuje Web Storage API (LocalStorage) do przechowywania wszystkich danych po stronie klienta. Dane są zapisywane w formacie JSON.</p>
+
+    <h2>7.2. Klucze LocalStorage</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Klucz</th>
+                <th>Typ danych</th>
+                <th>Opis</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>'habits'</code></td>
+                <td>Array</td>
+                <td>Tablica obiektów nawyków</td>
+            </tr>
+            <tr>
+                <td><code>'transactions'</code></td>
+                <td>Array</td>
+                <td>Tablica obiektów transakcji</td>
+            </tr>
+            <tr>
+                <td><code>'todos'</code></td>
+                <td>Array</td>
+                <td>Tablica obiektów zadań</td>
+            </tr>
+            <tr>
+                <td><code>'wishes'</code></td>
+                <td>Array</td>
+                <td>Tablica obiektów życzeń</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>7.3. Format danych</h2>
+    <p>Wszystkie dane są serializowane do JSON przed zapisem i deserializowane po odczytaniu:</p>
+    <pre><code>// Zapis
+localStorage.setItem('habits', JSON.stringify(state.habits));
+
+// Odczyt
+state.habits = JSON.parse(localStorage.getItem('habits') || '[]');</code></pre>
+
+    <div class="warning-box">
+        <strong>Uwaga:</strong> LocalStorage ma limit około 5-10 MB na domenę. Dla większości przypadków użycia aplikacji to wystarczająca ilość miejsca. W przypadku przekroczenia limitu, aplikacja może nie zapisywać nowych danych.
+    </div>
+
+    <h2>7.4. Persystencja danych</h2>
+    <p>Dane przechowywane w LocalStorage są:</p>
+    <ul>
+        <li><strong>Trwałe</strong> - pozostają po zamknięciu przeglądarki</li>
+        <li><strong>Specyficzne dla domeny</strong> - dostępne tylko dla tej samej domeny</li>
+        <li><strong>Synchroniczne</strong> - operacje są synchroniczne (blokujące)</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <h1 id="ui">8. Interfejs użytkownika</h1>
+
+    <h2>8.1. Layout</h2>
+    <p>Aplikacja wykorzystuje layout typu "Sidebar + Main Content":</p>
+    <ul>
+        <li><strong>Sidebar (220px)</strong> - nawigacja między modułami</li>
+        <li><strong>Topbar (50px)</strong> - tytuł modułu i ikony pomocnicze</li>
+        <li><strong>Content Area</strong> - główna przestrzeń robocza z modułami</li>
+    </ul>
+
+    <h2>8.2. Motyw kolorystyczny</h2>
+    <p>Aplikacja wykorzystuje ciemny motyw z następującą paletą kolorów:</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Element</th>
+                <th>Kolor</th>
+                <th>Kod hex</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Tło główne</td>
+                <td>Ciemny szary</td>
+                <td>#111</td>
+            </tr>
+            <tr>
+                <td>Sidebar</td>
+                <td>Ciemny szary</td>
+                <td>#1e1e1e</td>
+            </tr>
+            <tr>
+                <td>Karty/Kontenery</td>
+                <td>Średni szary</td>
+                <td>#2a2a2a</td>
+            </tr>
+            <tr>
+                <td>Akcent (główny)</td>
+                <td>Turkusowy</td>
+                <td>#4ECDC4</td>
+            </tr>
+            <tr>
+                <td>Akcent (drugi)</td>
+                <td>Niebieski</td>
+                <td>#45B7D1</td>
+            </tr>
+            <tr>
+                <td>Błąd/Wydatki</td>
+                <td>Czerwony</td>
+                <td>#FF6B6B</td>
+            </tr>
+            <tr>
+                <td>Tekst</td>
+                <td>Jasny szary</td>
+                <td>#e0e0e0</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>8.3. Komponenty UI</h2>
+
+    <h3>8.3.1. Przyciski</h3>
+    <ul>
+        <li><strong>btn-primary</strong> - główny przycisk akcji (turkusowy)</li>
+        <li><strong>btn-secondary</strong> - przycisk pomocniczy (szary)</li>
+        <li><strong>btn-icon</strong> - przycisk z ikoną (przezroczysty)</li>
+    </ul>
+
+    <h3>8.3.2. Modale</h3>
+    <p>Wszystkie formularze dodawania elementów są wyświetlane w modalach (overlay). Modal składa się z:</p>
+    <ul>
+        <li>Tła z efektem blur</li>
+        <li>Karty modalnej z zaokrąglonymi rogami</li>
+        <li>Przycisku zamknięcia (X)</li>
+        <li>Formularza z polami wejściowymi</li>
+        <li>Przycisku zapisu</li>
+    </ul>
+
+    <h3>8.3.3. Pasek postępu</h3>
+    <p>Używany w module Habit Tracker do wizualizacji postępu wykonania nawyku w miesiącu.</p>
+
+    <h2>8.4. Responsywność</h2>
+    <p>Aplikacja jest responsywna i dostosowuje się do różnych rozmiarów ekranów:</p>
+    <ul>
+        <li><strong>Desktop (>768px)</strong> - pełny layout z sidebarem</li>
+        <li><strong>Tablet/Mobile (≤768px)</strong> - uproszczony layout, ukryte teksty w nawigacji</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <h1 id="instalacja">9. Instalacja i uruchomienie</h1>
+
+    <h2>9.1. Wymagania</h2>
+    <ul>
+        <li>Nowoczesna przeglądarka internetowa (Chrome, Firefox, Edge, Safari)</li>
+        <li>Wsparcie dla JavaScript ES6+</li>
+        <li>Wsparcie dla LocalStorage API</li>
+        <li>Wsparcie dla Canvas API (dla wykresów)</li>
+    </ul>
+
+    <h2>9.2. Instalacja</h2>
+    <p>Aplikacja nie wymaga instalacji. Wystarczy:</p>
+    <ol>
+        <li>Pobrać pliki projektu</li>
+        <li>Upewnić się, że struktura folderów jest zachowana:
+            <pre><code>Edward-Cullen/
+├── Edward.html
+├── script.js
+└── style/
+    └── style.css</code></pre>
+        </li>
+    </ol>
+
+    <h2>9.3. Uruchomienie</h2>
+    <p>Aplikację można uruchomić na dwa sposoby:</p>
+
+    <h3>9.3.1. Lokalnie (file://)</h3>
+    <p>Otwórz plik <code>Edward.html</code> bezpośrednio w przeglądarce. Niektóre funkcje mogą być ograniczone z powodu polityki CORS.</p>
+
+    <h3>9.3.2. Przez serwer lokalny (zalecane)</h3>
+    <p>Uruchom lokalny serwer HTTP. Przykłady:</p>
+    
+    <h4>Python 3:</h4>
+    <pre><code>python -m http.server 8000</code></pre>
+    <p>Następnie otwórz: <code>http://localhost:8000/Edward.html</code></p>
+
+    <h4>Node.js (http-server):</h4>
+    <pre><code>npx http-server</code></pre>
+
+    <h4>PHP:</h4>
+    <pre><code>php -S localhost:8000</code></pre>
+
+    <div class="info-box">
+        <strong>Zalecenie:</strong> Używanie lokalnego serwera HTTP jest zalecane, ponieważ zapewnia pełną funkcjonalność aplikacji i unika problemów z CORS.
+    </div>
+
+    <div class="page-break"></div>
+
+    <h1 id="uzytkowanie">10. Instrukcja użytkowania</h1>
+
+    <h2>10.1. Pierwsze uruchomienie</h2>
+    <ol>
+        <li>Otwórz aplikację w przeglądarce</li>
+        <li>Domyślnie otworzy się moduł <strong>Habit Tracker</strong></li>
+        <li>Użyj nawigacji w lewym sidebarze, aby przełączać się między modułami</li>
+    </ol>
+
+    <h2>10.2. Habit Tracker</h2>
+    <ol>
+        <li>Kliknij przycisk <strong>"+ Dodaj nawyk"</strong></li>
+        <li>Wpisz nazwę nawyku i kliknij <strong>"Zapisz"</strong></li>
+        <li>Klikaj na dni w kalendarzu, aby oznaczyć je jako wykonane (zielone)</li>
+        <li>Dni w przeszłości, które nie zostały wykonane, automatycznie stają się czerwone</li>
+        <li>Sprawdzaj postęp na pasku postępu pod kalendarzem</li>
+    </ol>
+
+    <h2>10.3. Kosztorys</h2>
+    <ol>
+        <li>Kliknij <strong>"+ Wydatek"</strong> lub <strong>"+ Przychód"</strong></li>
+        <li>Wypełnij formularz: kwota, opis, kategoria</li>
+        <li>Kliknij <strong>"Zapisz"</strong></li>
+        <li>Sprawdzaj podsumowanie finansowe na górze</li>
+        <li>Przeglądaj wykres kołowy wydatków według kategorii</li>
+        <li>Przeglądaj listę wszystkich transakcji poniżej</li>
+    </ol>
+
+    <h2>10.4. TodoList</h2>
+    <ol>
+        <li>Kliknij <strong>"+ Dodaj zadanie"</strong></li>
+        <li>Wypełnij formularz: tytuł, opis (opcjonalnie), priorytet, kategorię, datę (opcjonalnie)</li>
+        <li>Kliknij <strong>"Zapisz"</strong></li>
+        <li>Użyj filtrów, aby filtrować zadania po priorytecie, kategorii lub statusie</li>
+        <li>Kliknij <strong>"Sortuj"</strong>, aby posortować zadania według priorytetu</li>
+        <li>Zaznacz checkbox, aby oznaczyć zadanie jako wykonane</li>
+    </ol>
+
+    <h2>10.5. Calendar View</h2>
+    <ol>
+        <li>Użyj przycisków <strong>"‹"</strong> i <strong>"›"</strong>, aby nawigować między miesiącami</li>
+        <li>Dni z zadaniami wyświetlają liczbę zadań</li>
+        <li>Kliknij na dzień, aby zobaczyć listę zadań na ten dzień</li>
+        <li>Dzisiejszy dzień jest wyróżniony niebieską ramką</li>
+    </ol>
+
+    <h2>10.6. WishList</h2>
+    <ol>
+        <li>Kliknij <strong>"+ Dodaj życzenie"</strong></li>
+        <li>Wypełnij formularz: nazwa, cena (opcjonalnie), opis (opcjonalnie)</li>
+        <li>Kliknij <strong>"Zapisz"</strong></li>
+        <li>Zaznacz checkbox, aby oznaczyć życzenie jako spełnione</li>
+        <li>Sprawdzaj podsumowanie statystyk w panelu po prawej stronie</li>
+    </ol>
+
+    <h2>10.7. Zarządzanie danymi</h2>
+    <div class="warning-box">
+        <strong>Uwaga:</strong> Wszystkie dane są przechowywane lokalnie w przeglądarce. Wyczyszczenie danych przeglądarki (cache, cookies, LocalStorage) spowoduje utratę wszystkich danych aplikacji.
+    </div>
+
+    <h2>10.8. Porady</h2>
+    <ul>
+        <li>Regularnie sprawdzaj postęp w nawykach, aby utrzymać motywację</li>
+        <li>Kategoryzuj transakcje, aby lepiej zrozumieć swoje wydatki</li>
+        <li>Używaj priorytetów w zadaniach, aby skupić się na najważniejszych rzeczach</li>
+        <li>Przypisuj daty do zadań, aby lepiej je planować w kalendarzu</li>
+        <li>Śledź ceny życzeń, aby móc planować budżet</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <h1>11. Podsumowanie</h1>
+
+    <p>Aplikacja <strong>Edward Cullen - Personal Organizer</strong> to kompleksowe narzędzie do zarządzania codziennym życiem, które łączy w sobie funkcjonalności śledzenia nawyków, zarządzania finansami, listy zadań, kalendarza oraz listy życzeń.</p>
+
+    <h2>Kluczowe cechy:</h2>
+    <ul>
+        <li>✓ Pięć niezależnych modułów funkcjonalnych</li>
+        <li>✓ Intuicyjny interfejs użytkownika</li>
+        <li>✓ Przechowywanie danych lokalnie (bez potrzeby serwera)</li>
+        <li>✓ Responsywny design</li>
+        <li>✓ Brak zależności zewnętrznych</li>
+        <li>✓ Integracja między modułami (Calendar View + TodoList, WishList + Budget)</li>
+    </ul>
+
+    <h2>Statystyki projektu:</h2>
+    <ul>
+        <li><strong>Pliki:</strong> 3 główne pliki (HTML, JS, CSS)</li>
+        <li><strong>Linie kodu JavaScript:</strong> ~736</li>
+        <li><strong>Linie kodu CSS:</strong> ~861</li>
+        <li><strong>Moduły:</strong> 5</li>
+        <li><strong>Funkcje:</strong> ~30+</li>
+    </ul>
+
+    <hr style="margin-top: 50px; border: none; border-top: 2px solid #4ECDC4;">
+    <p style="text-align: center; color: #999; font-size: 0.9em;">
+        Edward Cullen - Personal Organizer v1.0<br>
+        Dokumentacja techniczna - 2024
+    </p>
+
+</body>
+</html>
+

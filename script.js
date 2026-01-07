@@ -896,8 +896,27 @@ function updateWishlistSummary() {
   `;
 }
 
+// Modal handling
+function initModals() {
+  document.querySelectorAll('.modal').forEach(modal => {
+    const closeBtn = modal.querySelector('.close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+    }
+    
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  });
+}
+
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
+  initModals();
   initNavigation();
   switchModule('habits');
 });

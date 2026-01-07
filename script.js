@@ -669,6 +669,117 @@ function getCategoryNameTodo(category) {
   return names[category] || category;
 }
 
+// Calendar View Module
+function initCalendarModule() {
+  renderCalendar();
+  
+  const prevMonthBtn = document.getElementById('prevMonthBtn');
+  const nextMonthBtn = document.getElementById('nextMonthBtn');
+  
+  prevMonthBtn.addEventListener('click', () => {
+    state.currentMonth--;
+    if (state.currentMonth < 0) {
+      state.currentMonth = 11;
+      state.currentYear--;
+    }
+    renderCalendar();
+  });
+  
+  nextMonthBtn.addEventListener('click', () => {
+    state.currentMonth++;
+    if (state.currentMonth > 11) {
+      state.currentMonth = 0;
+      state.currentYear++;
+    }
+    renderCalendar();
+  });
+}
+
+function renderCalendar() {
+  const calendarContainer = document.getElementById('calendarContainer');
+  calendarContainer.innerHTML = '';
+  
+  const monthNames = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
+  document.getElementById('calendarMonth').textContent = `${monthNames[state.currentMonth]} ${state.currentYear}`;
+  
+  const daysInMonth = getDaysInMonth(state.currentMonth, state.currentYear);
+  const firstDay = getFirstDayOfMonth(state.currentMonth, state.currentYear);
+  const daysOfWeek = ['Nd', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'Sb'];
+  
+  daysOfWeek.forEach(day => {
+    const dayHeader = document.createElement('div');
+    dayHeader.className = 'calendar-day-header';
+    dayHeader.textContent = day;
+    calendarContainer.appendChild(dayHeader);
+  });
+  
+  for (let i = 0; i < firstDay; i++) {
+    const emptyDay = document.createElement('div');
+    emptyDay.className = 'calendar-day empty';
+    calendarContainer.appendChild(emptyDay);
+  }
+  
+  const today = new Date();
+  const isCurrentMonth = state.currentMonth === today.getMonth() && state.currentYear === today.getFullYear();
+  
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dayEl = document.createElement('div');
+    const dayDate = new Date(state.currentYear, state.currentMonth, day);
+    const dateStr = `${state.currentYear}-${String(state.currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    
+    const todosForDay = state.todos.filter(t => t.date === dateStr && !t.done);
+    const todoCount = todosForDay.length;
+    
+    let dayClass = 'calendar-day';
+    if (isCurrentMonth && day === today.getDate()) {
+      dayClass += ' today';
+    }
+    
+    dayEl.className = dayClass;
+    dayEl.innerHTML = `
+      <div class="calendar-day-number">${day}</div>
+      ${todoCount > 0 ? `<div class="calendar-todo-count">${todoCount}</div>` : ''}
+    `;
+    dayEl.dataset.date = dateStr;
+    
+    if (todoCount > 0) {
+      dayEl.addEventListener('click', () => {
+        renderCalendarTodos(dateStr, todosForDay);
+      });
+    }
+    
+    calendarContainer.appendChild(dayEl);
+  }
+}
+
+function renderCalendarTodos(dateStr, todos) {
+  const calendarTodos = document.getElementById('calendarTodos');
+  calendarTodos.innerHTML = `<h3>Zadania na ${formatDate(dateStr)}</h3>`;
+  
+  if (todos.length === 0) {
+    calendarTodos.innerHTML += '<p style="color: #888;">Brak zadań na ten dzień.</p>';
+    return;
+  }
+  
+  todos.forEach(todo => {
+    const todoEl = document.createElement('div');
+    todoEl.className = `todo-item priority-${todo.priority}`;
+    todoEl.innerHTML = `
+      <div class="todo-content">
+        <div class="todo-info">
+          <div class="todo-title">${todo.title}</div>
+          ${todo.description ? `<div class="todo-description">${todo.description}</div>` : ''}
+          <div class="todo-meta">
+            <span class="todo-priority">${getPriorityName(todo.priority)}</span>
+            <span class="todo-category">${getCategoryNameTodo(todo.category)}</span>
+          </div>
+        </div>
+      </div>
+    `;
+    calendarTodos.appendChild(todoEl);
+  });
+}
+
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
   initNavigation();

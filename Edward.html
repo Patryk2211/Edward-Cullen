@@ -44,15 +44,168 @@
       </div>
 
       <div class="content">
-        <div class="module" id="habits-module"></div>
-        <div class="module hidden" id="budget-module"></div>
-        <div class="module hidden" id="todo-module"></div>
-        <div class="module hidden" id="calendar-module"></div>
-        <div class="module hidden" id="wishlist-module"></div>
+        <!-- Habit Tracker Module -->
+        <div class="module" id="habits-module">
+          <div class="habits-header">
+            <h2>Moje nawyki</h2>
+            <button class="btn-primary" id="addHabitBtn">+ Dodaj nawyk</button>
+          </div>
+          <div class="habits-list" id="habitsList"></div>
+        </div>
+
+        <!-- Budget Module -->
+        <div class="module hidden" id="budget-module">
+          <div class="budget-header">
+            <div class="budget-summary">
+              <div class="summary-card">
+                <h3>Wydatki</h3>
+                <div class="amount expense" id="totalExpenses">0.00 zł</div>
+              </div>
+              <div class="summary-card">
+                <h3>Przychody</h3>
+                <div class="amount income" id="totalIncome">0.00 zł</div>
+              </div>
+              <div class="summary-card">
+                <h3>Bilans</h3>
+                <div class="amount" id="balance">0.00 zł</div>
+              </div>
+            </div>
+            <div class="budget-actions">
+              <button class="btn-primary" id="addExpenseBtn">+ Wydatek</button>
+              <button class="btn-secondary" id="addIncomeBtn">+ Przychód</button>
+            </div>
+          </div>
+          <div class="budget-content">
+            <div class="transactions-section">
+              <h3>Lista transakcji</h3>
+              <div class="transactions-list" id="transactionsList"></div>
+            </div>
+            <div class="chart-section">
+              <h3>Podsumowanie miesięczne</h3>
+              <canvas id="expenseChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- TodoList Module -->
+        <div class="module hidden" id="todo-module">
+          <div class="todo-header">
+            <h2>Lista zadań</h2>
+            <button class="btn-primary" id="addTodoBtn">+ Dodaj zadanie</button>
+          </div>
+          <div class="todo-filters">
+            <select id="filterPriority">
+              <option value="all">Wszystkie priorytety</option>
+              <option value="high">Wysoki</option>
+              <option value="medium">Średni</option>
+              <option value="low">Niski</option>
+            </select>
+            <select id="filterCategory">
+              <option value="all">Wszystkie kategorie</option>
+              <option value="home">Dom</option>
+              <option value="school">Szkoła</option>
+              <option value="work">Praca</option>
+            </select>
+            <select id="filterStatus">
+              <option value="all">Wszystkie</option>
+              <option value="active">Aktywne</option>
+              <option value="done">Wykonane</option>
+            </select>
+            <button class="btn-secondary" id="sortTodosBtn">Sortuj</button>
+          </div>
+          <div class="todos-list" id="todosList"></div>
+        </div>
+
+        <!-- Calendar View Module -->
+        <div class="module hidden" id="calendar-module">
+          <div class="calendar-header">
+            <button class="btn-icon" id="prevMonthBtn">‹</button>
+            <h2 id="calendarMonth"></h2>
+            <button class="btn-icon" id="nextMonthBtn">›</button>
+          </div>
+          <div class="calendar-container" id="calendarContainer"></div>
+          <div class="calendar-todos" id="calendarTodos"></div>
+        </div>
+
+        <!-- WishList Module -->
+        <div class="module hidden" id="wishlist-module">
+          <div class="wishlist-header">
+            <h2>Lista życzeń</h2>
+            <button class="btn-primary" id="addWishBtn">+ Dodaj życzenie</button>
+          </div>
+          <div class="wishlist-content">
+            <div class="wishlist-list" id="wishlistList"></div>
+            <div class="wishlist-summary">
+              <h3>Podsumowanie</h3>
+              <div id="wishlistSummary"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
+  <!-- Modals -->
+  <div class="modal" id="habitModal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Dodaj nowy nawyk</h2>
+      <input type="text" id="habitName" placeholder="Nazwa nawyku" required>
+      <button class="btn-primary" id="saveHabitBtn">Zapisz</button>
+    </div>
+  </div>
+
+  <div class="modal" id="transactionModal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 id="transactionModalTitle">Dodaj transakcję</h2>
+      <input type="number" id="transactionAmount" placeholder="Kwota" step="0.01" required>
+      <input type="text" id="transactionDescription" placeholder="Opis" required>
+      <select id="transactionCategory">
+        <option value="food">Jedzenie</option>
+        <option value="transport">Transport</option>
+        <option value="work">Praca</option>
+        <option value="entertainment">Rozrywka</option>
+        <option value="health">Zdrowie</option>
+        <option value="shopping">Zakupy</option>
+        <option value="other">Inne</option>
+      </select>
+      <button class="btn-primary" id="saveTransactionBtn">Zapisz</button>
+    </div>
+  </div>
+
+  <div class="modal" id="todoModal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Dodaj zadanie</h2>
+      <input type="text" id="todoTitle" placeholder="Tytuł zadania" required>
+      <textarea id="todoDescription" placeholder="Opis (opcjonalnie)"></textarea>
+      <select id="todoPriority">
+        <option value="low">Niski</option>
+        <option value="medium">Średni</option>
+        <option value="high">Wysoki</option>
+      </select>
+      <select id="todoCategory">
+        <option value="home">Dom</option>
+        <option value="school">Szkoła</option>
+        <option value="work">Praca</option>
+      </select>
+      <input type="date" id="todoDate" placeholder="Data (opcjonalnie)">
+      <button class="btn-primary" id="saveTodoBtn">Zapisz</button>
+    </div>
+  </div>
+
+  <div class="modal" id="wishModal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Dodaj życzenie</h2>
+      <input type="text" id="wishName" placeholder="Nazwa życzenia" required>
+      <input type="number" id="wishPrice" placeholder="Cena (opcjonalnie)" step="0.01">
+      <textarea id="wishDescription" placeholder="Opis (opcjonalnie)"></textarea>
+      <button class="btn-primary" id="saveWishBtn">Zapisz</button>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
-

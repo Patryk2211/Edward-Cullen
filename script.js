@@ -524,6 +524,151 @@ function getCategoryNameTodo(category) {
   return names[category] || category;
 }
 
+// TodoList Module
+function initTodoModule() {
+  renderTodos();
+  
+  const addTodoBtn = document.getElementById('addTodoBtn');
+  const todoModal = document.getElementById('todoModal');
+  const saveTodoBtn = document.getElementById('saveTodoBtn');
+  const closeModal = todoModal.querySelector('.close');
+  const filterPriority = document.getElementById('filterPriority');
+  const filterCategory = document.getElementById('filterCategory');
+  const filterStatus = document.getElementById('filterStatus');
+  const sortTodosBtn = document.getElementById('sortTodosBtn');
+  
+  addTodoBtn.addEventListener('click', () => {
+    todoModal.style.display = 'block';
+    document.getElementById('todoTitle').value = '';
+    document.getElementById('todoDescription').value = '';
+    document.getElementById('todoDate').value = '';
+  });
+  
+  closeModal.addEventListener('click', () => {
+    todoModal.style.display = 'none';
+  });
+  
+  saveTodoBtn.addEventListener('click', () => {
+    const title = document.getElementById('todoTitle').value.trim();
+    const description = document.getElementById('todoDescription').value.trim();
+    const priority = document.getElementById('todoPriority').value;
+    const category = document.getElementById('todoCategory').value;
+    const date = document.getElementById('todoDate').value;
+    
+    if (title) {
+      const todo = {
+        id: Date.now(),
+        title: title,
+        description: description,
+        priority: priority,
+        category: category,
+        date: date || null,
+        done: false
+      };
+      state.todos.push(todo);
+      saveToStorage('todos', state.todos);
+      renderTodos();
+      todoModal.style.display = 'none';
+    }
+  });
+  
+  filterPriority.addEventListener('change', renderTodos);
+  filterCategory.addEventListener('change', renderTodos);
+  filterStatus.addEventListener('change', renderTodos);
+  
+  sortTodosBtn.addEventListener('click', () => {
+    state.todos.sort((a, b) => {
+      const priorityOrder = { high: 3, medium: 2, low: 1 };
+      return priorityOrder[b.priority] - priorityOrder[a.priority];
+    });
+    saveToStorage('todos', state.todos);
+    renderTodos();
+  });
+}
+
+function renderTodos() {
+  const todosList = document.getElementById('todosList');
+  todosList.innerHTML = '';
+  
+  let filteredTodos = [...state.todos];
+  
+  const priorityFilter = document.getElementById('filterPriority').value;
+  if (priorityFilter !== 'all') {
+    filteredTodos = filteredTodos.filter(t => t.priority === priorityFilter);
+  }
+  
+  const categoryFilter = document.getElementById('filterCategory').value;
+  if (categoryFilter !== 'all') {
+    filteredTodos = filteredTodos.filter(t => t.category === categoryFilter);
+  }
+  
+  const statusFilter = document.getElementById('filterStatus').value;
+  if (statusFilter === 'active') {
+    filteredTodos = filteredTodos.filter(t => !t.done);
+  } else if (statusFilter === 'done') {
+    filteredTodos = filteredTodos.filter(t => t.done);
+  }
+  
+  if (filteredTodos.length === 0) {
+    todosList.innerHTML = '<p style="text-align: center; color: #888;">Brak zadań. Dodaj pierwsze zadanie!</p>';
+    return;
+  }
+  
+  filteredTodos.forEach(todo => {
+    const todoEl = document.createElement('div');
+    todoEl.className = `todo-item ${todo.done ? 'done' : ''} priority-${todo.priority}`;
+    todoEl.innerHTML = `
+      <div class="todo-content">
+        <input type="checkbox" ${todo.done ? 'checked' : ''} data-todo-id="${todo.id}">
+        <div class="todo-info">
+          <div class="todo-title">${todo.title}</div>
+          ${todo.description ? `<div class="todo-description">${todo.description}</div>` : ''}
+          <div class="todo-meta">
+            <span class="todo-priority">${getPriorityName(todo.priority)}</span>
+            <span class="todo-category">${getCategoryNameTodo(todo.category)}</span>
+            ${todo.date ? `<span class="todo-date">${formatDate(todo.date)}</span>` : ''}
+          </div>
+        </div>
+      </div>
+      <button class="btn-delete" data-todo-id="${todo.id}">🗑️</button>
+    `;
+    todosList.appendChild(todoEl);
+    
+    todoEl.querySelector('input[type="checkbox"]').addEventListener('change', (e) => {
+      const todo = state.todos.find(t => t.id === parseInt(e.target.dataset.todoId));
+      if (todo) {
+        todo.done = e.target.checked;
+        saveToStorage('todos', state.todos);
+        renderTodos();
+      }
+    });
+    
+    todoEl.querySelector('.btn-delete').addEventListener('click', () => {
+      state.todos = state.todos.filter(t => t.id !== todo.id);
+      saveToStorage('todos', state.todos);
+      renderTodos();
+    });
+  });
+}
+
+function getPriorityName(priority) {
+  const names = {
+    high: 'Wysoki',
+    medium: 'Średni',
+    low: 'Niski'
+  };
+  return names[priority] || priority;
+}
+
+function getCategoryNameTodo(category) {
+  const names = {
+    home: 'Dom',
+    school: 'Szkoła',
+    work: 'Praca'
+  };
+  return names[category] || category;
+}
+
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
   initNavigation();

@@ -780,6 +780,122 @@ function renderCalendarTodos(dateStr, todos) {
   });
 }
 
+// WishList Module
+function initWishlistModule() {
+  renderWishlist();
+  updateWishlistSummary();
+  
+  const addWishBtn = document.getElementById('addWishBtn');
+  const wishModal = document.getElementById('wishModal');
+  const saveWishBtn = document.getElementById('saveWishBtn');
+  const closeModal = wishModal.querySelector('.close');
+  
+  addWishBtn.addEventListener('click', () => {
+    wishModal.style.display = 'block';
+    document.getElementById('wishName').value = '';
+    document.getElementById('wishPrice').value = '';
+    document.getElementById('wishDescription').value = '';
+  });
+  
+  closeModal.addEventListener('click', () => {
+    wishModal.style.display = 'none';
+  });
+  
+  saveWishBtn.addEventListener('click', () => {
+    const name = document.getElementById('wishName').value.trim();
+    const price = parseFloat(document.getElementById('wishPrice').value) || null;
+    const description = document.getElementById('wishDescription').value.trim();
+    
+    if (name) {
+      const wish = {
+        id: Date.now(),
+        name: name,
+        price: price,
+        description: description,
+        fulfilled: false
+      };
+      state.wishes.push(wish);
+      saveToStorage('wishes', state.wishes);
+      renderWishlist();
+      updateWishlistSummary();
+      wishModal.style.display = 'none';
+    }
+  });
+}
+
+function renderWishlist() {
+  const wishlistList = document.getElementById('wishlistList');
+  wishlistList.innerHTML = '';
+  
+  if (state.wishes.length === 0) {
+    wishlistList.innerHTML = '<p style="text-align: center; color: #888;">Brak życzeń. Dodaj pierwsze życzenie!</p>';
+    return;
+  }
+  
+  state.wishes.forEach(wish => {
+    const wishEl = document.createElement('div');
+    wishEl.className = `wish-item ${wish.fulfilled ? 'fulfilled' : ''}`;
+    wishEl.innerHTML = `
+      <div class="wish-content">
+        <input type="checkbox" ${wish.fulfilled ? 'checked' : ''} data-wish-id="${wish.id}">
+        <div class="wish-info">
+          <div class="wish-name">${wish.name}</div>
+          ${wish.description ? `<div class="wish-description">${wish.description}</div>` : ''}
+          ${wish.price ? `<div class="wish-price">${wish.price.toFixed(2)} zł</div>` : ''}
+        </div>
+      </div>
+      <button class="btn-delete" data-wish-id="${wish.id}">🗑️</button>
+    `;
+    wishlistList.appendChild(wishEl);
+    
+    wishEl.querySelector('input[type="checkbox"]').addEventListener('change', (e) => {
+      const wish = state.wishes.find(w => w.id === parseInt(e.target.dataset.wishId));
+      if (wish) {
+        wish.fulfilled = e.target.checked;
+        saveToStorage('wishes', state.wishes);
+        renderWishlist();
+        updateWishlistSummary();
+      }
+    });
+    
+    wishEl.querySelector('.btn-delete').addEventListener('click', () => {
+      state.wishes = state.wishes.filter(w => w.id !== wish.id);
+      saveToStorage('wishes', state.wishes);
+      renderWishlist();
+      updateWishlistSummary();
+    });
+  });
+}
+
+function updateWishlistSummary() {
+  const summary = document.getElementById('wishlistSummary');
+  const all = state.wishes.length;
+  const fulfilled = state.wishes.filter(w => w.fulfilled).length;
+  const pending = all - fulfilled;
+  const totalCost = state.wishes
+    .filter(w => !w.fulfilled && w.price)
+    .reduce((sum, w) => sum + w.price, 0);
+  
+  summary.innerHTML = `
+    <div class="summary-item">
+      <span class="summary-label">Wszystkie:</span>
+      <span class="summary-value">${all}</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">Spełnione:</span>
+      <span class="summary-value">${fulfilled}</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">Do spełnienia:</span>
+      <span class="summary-value">${pending}</span>
+    </div>
+    <div class="summary-item">
+      <span class="summary-label">Szacowany koszt:</span>
+      <span class="summary-value">${totalCost.toFixed(2)} zł</span>
+    </div>
+  `;
+}
+
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
